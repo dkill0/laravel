@@ -17,7 +17,7 @@
                         Editar producto
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('products.store')}}" method="POST">
+                        <form action="{{ route('products.update',$product->id) }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="">Descripcion</label>

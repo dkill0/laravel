@@ -39,3 +39,7 @@ Route::get('products/{id}/edit', function($id){
         $product= Product::findOrFail($id);
         return view('products.edit', compact('product'));
 })->name('products.edit');
+
+Route::put('products/{id}', function($id){
+    return $id;
+})->name('products.update');
