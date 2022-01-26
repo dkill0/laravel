@@ -5,41 +5,19 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 
+Route::middleware('auth')->group(function () {
 
-Route::get('products', function () {
+    Route::get('products', 'ProductController@index')->name('products.index');
 
-    return view('products.index');
-})->name('products.index');
+    Route::get('products/create', 'ProductController@create')->name('products.create');
 
-Route::get('products/create', function () {
+    Route::post('products', 'ProductController@store')->name('products.store');
 
-    return view('products.create');
-})->name('products.create');
+    Route::delete('products/{id}', 'ProductController@destroy')->name('products.destroy');
 
-Route::post('products',function( Request $request){
-    $newProduct = new Product;
-    $newProduct -> description =$request->input('description');
-    $newProduct -> price =$request->input('price');
-    $newProduct->save();
-    return redirect()->route('products.index')->with('info', 'Producto insertado correctamente');
-})->name('products.store');
+    Route::get('products/{id}/edit', 'ProductController@edit')->name('products.edit');
 
-Route::get('products', function(){
-    $products = Product::orderBy('created_at', 'desc')->get();
-    return view('products.index', compact('products'));
-})->name('products.index');
+    Route::put('products/{id}', 'ProductController@update')->name('products.update');
+});
 
-Route::delete('products/{id}', function($id){
-    $product=Product::findOrFail($id);
-    $product->delete();
-    return redirect()->route('products.index')->with('info', 'Producto eliminado correctamente');
-})->name('products.destroy');
-
-Route::get('products/{id}/edit', function($id){
-        $product= Product::findOrFail($id);
-        return view('products.edit', compact('product'));
-})->name('products.edit');
-
-Route::put('products/{id}', function($id){
-    return $id;
-})->name('products.update');
+Auth::routes();
