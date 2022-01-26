@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function index () {
-        $products = Product::orderBy('created_at', 'desc')->get();
+        $products = DB::table('products')->where('price','>','3')->get();
         return view('products.index', compact('products'));
     }
 
