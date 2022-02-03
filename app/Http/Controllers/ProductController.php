@@ -21,6 +21,19 @@ class ProductController extends Controller
         $newProduct = new Product;
         $newProduct->description = $request->input('description');
         $newProduct->price = $request->input('price');
+        $text = "'<b>Se ha añadido el producto: </b>: \n"
+        . "<b>ID: </b> \n"
+        . "$newProduct->id\n"
+        . "<b>Descripcion: </b> \n"
+        . "$newProduct->description\n"
+        . "<b>Precio: </b> \n"
+        . "$newProduct->price"."€";
+
+        \Telegram::sendMessage([
+            'chat_id' => env('TELEGRAM_CHANNEL_ID', 'Variable no configurada'),
+            'parse_mode' => 'HTML',
+            'text' => $text
+        ]);
         $newProduct->save();
         return redirect()->route('products.index')->with('info', 'Producto insertado correctamente');
     }
