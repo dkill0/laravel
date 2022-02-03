@@ -18,6 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::get('products/{id}/edit', 'ProductController@edit')->name('products.edit');
 
     Route::put('products/{id}', 'ProductController@update')->name('products.update');
+
+    Route::get('/activity', 'ProductController@updatedActivity');
 });
 
 Auth::routes();

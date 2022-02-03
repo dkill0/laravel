@@ -27,8 +27,22 @@ class ProductController extends Controller
 
     public  function destroy($id) {
         $product = Product::findOrFail($id);
+        $text = "'<b>Se ha eliminado el producto: </b>: \n"
+        . "<b>ID: </b> \n"
+        . "$product->id\n"
+        . "<b>Descripcion: </b> \n"
+        . "$product->description\n"
+        . "<b>Precio: </b> \n"
+        . "$product->price"."€";
+
+        \Telegram::sendMessage([
+            'chat_id' => env('TELEGRAM_CHANNEL_ID', 'Variable no configurada'),
+            'parse_mode' => 'HTML',
+            'text' => $text
+        ]);
         $product->delete();
         return redirect()->route('products.index')->with('info', 'Producto eliminado correctamente');
+
     }
 
     public  function edit($id) {
@@ -43,4 +57,7 @@ class ProductController extends Controller
         $product->save();
         return redirect()->route('products.index')->with('info' . 'Producto modificado correctamente');
     }
+    
+
+
 }
